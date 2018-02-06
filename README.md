@@ -1,4 +1,4 @@
-# dome
+# dome laravel  mongodb  mysql vue element-ui bootstarp 
 dome
 
 git clone https://github.com/yangjie21/dome.git
