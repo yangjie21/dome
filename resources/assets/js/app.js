@@ -25,22 +25,23 @@ Vue.prototype.$message = Message
 Vue.prototype.$api = api
 Vue.config.productionTip = false;
 
-// router.beforeEach((to, from, next) => {
-//   NProgress.start();
-//   if (to.path == '/login') {
-//     sessionStorage.removeItem('user');
-//   }
-//   let user = JSON.parse(sessionStorage.getItem('user'));
-//   if (!user && to.path != '/login') {
-//     next({ path: '/login' })
-//   } else {
-//     next()
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  NProgress.start();
+  if (to.path == '/login') {
+     sessionStorage.access_token = null;
+  }
+  let access_token = sessionStorage.access_token;
+  console.log(access_token);
+  if (!access_token && to.path != '/login') {
+    next({ path: '/login' })
+  } else {
+    next()
+  }
+})
 
-// router.afterEach(transition => {
-// 	NProgress.done();
-// });
+router.afterEach(transition => {
+	NProgress.done();
+});
 
 const app = new Vue({
     el: '#app',

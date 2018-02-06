@@ -33149,22 +33149,23 @@ Vue.prototype.$message = __WEBPACK_IMPORTED_MODULE_1_element_ui__["Message"];
 Vue.prototype.$api = __WEBPACK_IMPORTED_MODULE_8__http_index_js__["a" /* default */];
 Vue.config.productionTip = false;
 
-// router.beforeEach((to, from, next) => {
-//   NProgress.start();
-//   if (to.path == '/login') {
-//     sessionStorage.removeItem('user');
-//   }
-//   let user = JSON.parse(sessionStorage.getItem('user'));
-//   if (!user && to.path != '/login') {
-//     next({ path: '/login' })
-//   } else {
-//     next()
-//   }
-// })
+__WEBPACK_IMPORTED_MODULE_7__router_index_js__["a" /* default */].beforeEach(function (to, from, next) {
+  __WEBPACK_IMPORTED_MODULE_2_nprogress___default.a.start();
+  if (to.path == '/login') {
+    sessionStorage.access_token = null;
+  }
+  var access_token = sessionStorage.access_token;
+  console.log(access_token);
+  if (!access_token && to.path != '/login') {
+    next({ path: '/login' });
+  } else {
+    next();
+  }
+});
 
-// router.afterEach(transition => {
-// 	NProgress.done();
-// });
+__WEBPACK_IMPORTED_MODULE_7__router_index_js__["a" /* default */].afterEach(function (transition) {
+  __WEBPACK_IMPORTED_MODULE_2_nprogress___default.a.done();
+});
 
 var app = new Vue({
   el: '#app',
@@ -75001,8 +75002,8 @@ if (inBrowser && window.Vue) {
 /*
 * @Author: wuyongjie
 * @Date:   2018-01-07 21:54:05
-* @Last Modified by:   wuyongjie
-* @Last Modified time: 2018-01-13 09:17:57
+* @Last Modified by:   thinkpad
+* @Last Modified time: 2018-02-06 15:41:10
 */
 
 
@@ -75018,7 +75019,7 @@ export default {
 }*/
 
 // 配置API接口地址
-var root = 'http://127.0.0.1:8000/';
+var root = 'http://127.0.0.1:8000/api/';
 
 function toType(obj) {
   return {}.toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase();
@@ -75039,32 +75040,29 @@ function filterNull(o) {
   }
   return o;
 }
-/*
-  接口处理函数
-  这个函数每个项目都是不一样的，我现在调整的是适用于
-  https://cnodejs.org/api/v1 的接口，如果是其他接口
-  需要根据接口的参数进行调整。参考说明文档地址：
-  https://cnodejs.org/topic/5378720ed6e2d16149fa16bd
-  主要是，不同的接口的成功标识和失败提示是不一致的。
-  另外，不同的项目的处理方法也是不一致的，这里出错就是简单的alert
-*/
 
 function apiAxios(method, url, params, success, failure) {
   __WEBPACK_IMPORTED_MODULE_1_nprogress___default.a.start();
   if (params) {
     params = filterNull(params);
   }
+  var access_token = '';
+  if (sessionStorage.access_token) {
+    access_token = sessionStorage.access_token;
+  }
+  //axios.defaults.headers.common['Authorization']
   __WEBPACK_IMPORTED_MODULE_0_axios___default()({
     method: method,
     url: url,
     data: method === 'POST' || method === 'PUT' ? params : null,
     params: method === 'GET' || method === 'DELETE' ? params : null,
     baseURL: root,
-    headers: { "Content-Type": "application/json;charset=utf-8", "Access-Token": "fjsdXRuCww+v2s4bRW37glpjcbWzpyC9UQ/dc8NvIdM=" },
-    withCredentials: true
+    headers: { "Content-Type": "application/json", "Authorization": "Bearer " + access_token },
+    withCredentials: false
   }).then(function (res) {
+    console.log(res);
     __WEBPACK_IMPORTED_MODULE_1_nprogress___default.a.done();
-    if (res.data.status === 'success') {
+    if (res.status === 200) {
       if (success) {
         success(res.data);
       }

@@ -16,12 +16,10 @@ export default {
             message: 'laravel mongodb vue mysql '
         }
     },
-    methods: {
-        getCode: function (event) {
-          this.$api.get('test', null, r => {
+    created () {
+        this.$api.get('test', null, r => {
             console.log(r)
           })
-        }
     }
 }
 </script>

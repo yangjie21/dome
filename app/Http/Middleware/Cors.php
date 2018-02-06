@@ -16,7 +16,7 @@ class Cors
     public function handle($request, Closure $next)
     {
         // 设置允许访问的域地址
-        $domains = ['http://localhost:8080', 'http://192.168.164.128:8080', 'http://192.168.164.128/dome/public', 'http://192.168.164.128'];
+        $domains = ['http://127.0.0.1:8000'];
         // 判断请求头中是否包含ORIGIN字段
         if(isset($request->server()['HTTP_ORIGIN'])){
             $origin = $request->server()['HTTP_ORIGIN'];
@@ -26,6 +26,7 @@ class Cors
                 header('Access-Control-Allow-Headers: Origin, Content-Type, Authorization');
             }
         }
+
         return $next($request);
     }
 }

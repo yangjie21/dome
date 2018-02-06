@@ -23,7 +23,7 @@
         logining: false,
         ruleForm2: {
           account: '17729919302',
-          checkPass: 'admin'
+          checkPass: 'password'
         },
         rules2: {
           account: [
@@ -41,10 +41,12 @@
     methods: {
         handleSubmit2: function (event) {
       
-          let data = {'phone': this.ruleForm2.account, 'grant_type':'password', 'client_id': 2, 'client_secret': 'aC8ufkSY1NQPp9ckVuIcXygobQK9lkm10nrhvw47', 'password':this.ruleForm2.checkPass, 'scope':''}
+          let data = {'phone': this.ruleForm2.account, 'password':this.ruleForm2.checkPass}
           console.log(data);
-          this.$api.post('oauth/token', data, r => {
-              console.log(r);
+          this.$api.post('login', data, r => {
+            console.log(r.access_token);
+              sessionStorage.access_token = r.access_token
+              this.$router.push('/');
           })
         } 
   	}

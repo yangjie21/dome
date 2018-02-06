@@ -21,3 +21,6 @@ Route::group(['middleware' => 'auth:api'], function(){
 	Route::post('qiniuyunToken', 'Api\QiniuController@qiniuyunToken');
     Route::post('logout', 'Api\AuthenticateController@logout');
 });
+Route::get('test', function(){
+	return ['1', '2','3'];
+});

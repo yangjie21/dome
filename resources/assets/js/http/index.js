@@ -1,8 +1,8 @@
 /*
 * @Author: wuyongjie
 * @Date:   2018-01-07 21:54:05
-* @Last Modified by:   wuyongjie
-* @Last Modified time: 2018-01-13 09:17:57
+* @Last Modified by:   thinkpad
+* @Last Modified time: 2018-02-06 15:41:10
 */
 import axios from 'axios';
 import NProgress from 'nprogress'
@@ -18,7 +18,7 @@ export default {
 }*/
 
 // 配置API接口地址
-var root = 'http://127.0.0.1:8000/'
+var root = 'http://127.0.0.1:8000/api/'
 
 function toType (obj) {
   return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
@@ -39,33 +39,30 @@ function filterNull (o) {
   }
   return o
 }
-/*
-  接口处理函数
-  这个函数每个项目都是不一样的，我现在调整的是适用于
-  https://cnodejs.org/api/v1 的接口，如果是其他接口
-  需要根据接口的参数进行调整。参考说明文档地址：
-  https://cnodejs.org/topic/5378720ed6e2d16149fa16bd
-  主要是，不同的接口的成功标识和失败提示是不一致的。
-  另外，不同的项目的处理方法也是不一致的，这里出错就是简单的alert
-*/
 
-function apiAxios (method, url, params, success, failure) {
+function apiAxios (method, url, params, success,failure) {
   NProgress.start()
   if (params) {
     params = filterNull(params)
   }
+  var access_token = '';
+  if (sessionStorage.access_token) {
+    access_token = sessionStorage.access_token;
+  }
+  //axios.defaults.headers.common['Authorization']
   axios({
     method: method,
     url: url,
     data: method === 'POST' || method === 'PUT' ? params : null,
     params: method === 'GET' || method === 'DELETE' ? params : null,
     baseURL: root,
-    headers: {"Content-Type": "application/json;charset=utf-8", "Access-Token":"fjsdXRuCww+v2s4bRW37glpjcbWzpyC9UQ/dc8NvIdM="},
-    withCredentials: true
+    headers: {"Content-Type": "application/json", "Authorization": "Bearer "+access_token},
+    withCredentials: false
   })
   .then(function (res) {
+    console.log(res);
     NProgress.done()
-    if (res.data.status === 'success') {
+    if (res.status === 200) {
       if (success) {
         success(res.data)
       }

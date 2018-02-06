@@ -124,7 +124,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       logining: false,
       ruleForm2: {
         account: '17729919302',
-        checkPass: 'admin'
+        checkPass: 'password'
       },
       rules2: {
         account: [{ required: true, message: '请输入账号', trigger: 'blur' }],
@@ -136,11 +136,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   methods: {
     handleSubmit2: function handleSubmit2(event) {
+      var _this = this;
 
-      var data = { 'phone': this.ruleForm2.account, 'grant_type': 'password', 'client_id': 2, 'client_secret': 'aC8ufkSY1NQPp9ckVuIcXygobQK9lkm10nrhvw47', 'password': this.ruleForm2.checkPass, 'scope': '' };
+      var data = { 'phone': this.ruleForm2.account, 'password': this.ruleForm2.checkPass };
       console.log(data);
-      this.$api.post('oauth/token', data, function (r) {
-        console.log(r);
+      this.$api.post('login', data, function (r) {
+        console.log(r.access_token);
+        sessionStorage.access_token = r.access_token;
+        _this.$router.push('/');
       });
     }
   }

@@ -117,13 +117,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             message: 'laravel mongodb vue mysql '
         };
     },
-
-    methods: {
-        getCode: function getCode(event) {
-            this.$api.get('test', null, function (r) {
-                console.log(r);
-            });
-        }
+    created: function created() {
+        this.$api.get('test', null, function (r) {
+            console.log(r);
+        });
     }
 });
 
